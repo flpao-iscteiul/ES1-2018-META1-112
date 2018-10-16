@@ -12,7 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 
-public class SendEmail {
+public class SendEmail { // Email Branch changes
 
     public static void main(String[] args) {
 
