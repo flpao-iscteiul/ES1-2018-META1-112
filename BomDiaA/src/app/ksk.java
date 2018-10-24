@@ -1,10 +1,12 @@
-package asasa;
+package app;
 
-public class lklk {
+public class ksk {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-System.out.println("ass");
+
+
+	System.out.println("sdfd");
 	}
 
 }
