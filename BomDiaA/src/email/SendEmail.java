@@ -16,8 +16,8 @@ public class SendEmail { // Email Branch changes
 
     public static void main(String[] args) {
 
-        final String username = ""; //change
-        final String password = ""; // change
+        final String username = "utterly.ap@gmail.com"; //change
+        final String password = "ati128mb"; // change
 
         Properties props = new Properties();
         props.put("mail.smtp.starttls.enable", "true");
