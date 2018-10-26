@@ -34,7 +34,7 @@ public class Posts {
 		for (List<Post> page : result) {
 			for (Post aPost : page) {
 				// Filters only posts that contain the word "ETI"
-				if (aPost.getMessage() != null && aPost.getMessage().contains("ETI")) {
+				if (aPost.getMessage() != null && aPost.getMessage().contains("ISCTE")) {
 					System.out.println("---- Post "+ counter5 + " ----");
 					System.out.println("Id: "+"fb.com/"+aPost.getId());
 					System.out.println("Message: "+aPost.getMessage());
