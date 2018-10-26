@@ -12,7 +12,7 @@ import com.restfb.types.User;
 public class Posts {
 	public static void main(String[] args) {
 		
-		String accessToken2 = "EAAEbjUhu2dcBAMnCBP5ZAhYI96q7CZBpiSIT7Uitwfpu7fTsUmGOEad4Dm1tpSZBAlZBwrkEwpRBFsFgI9wteBSb1IQ5q1Q80wM4j6Rm5j76j8z1iWRSrDBRJ6OopcRGxP3brZBOB5yDU0oiZA5FVZCU4ZBYOitpn2kkd1E2nzz7eLNVYorjZAvYuHCpPxelxzbhTicBVKeQT5U9jY3ZA1U7ZAh";
+		String accessToken2 = "EAAEbjUhu2dcBABzhwMNVZCKV9ZBjrgwQLFhZAeehOIZCMgwaHewLWM0gjc6ZA6sbXS5Y6ZCj2CuHz2tjVj3Qy795nwJ9B3h7G9y6gYD6WTGIKrOqBr59cqs0vjNci52xflexOFlu6kXjqLK0LnrkxjcTUCopRt0LilXd5BGFlFMj6EXSfyvDJZC49TOjP0H74za4N49BHPQwri7Qn1gNoHe";
 		FacebookClient fbClient2 = new DefaultFacebookClient(accessToken2);
 		User me2 = fbClient2.fetchObject("me", User.class);
 		System.out.println("Facebook:");
@@ -20,11 +20,11 @@ public class Posts {
 		System.out.println("Name: " + me2.getName()); 
 
 		
-		String accessToken4 = "EAAEbjUhu2dcBAMnCBP5ZAhYI96q7CZBpiSIT7Uitwfpu7fTsUmGOEad4Dm1tpSZBAlZBwrkEwpRBFsFgI9wteBSb1IQ5q1Q80wM4j6Rm5j76j8z1iWRSrDBRJ6OopcRGxP3brZBOB5yDU0oiZA5FVZCU4ZBYOitpn2kkd1E2nzz7eLNVYorjZAvYuHCpPxelxzbhTicBVKeQT5U9jY3ZA1U7ZAh";
+		String accessToken4 = "EAAEbjUhu2dcBABzhwMNVZCKV9ZBjrgwQLFhZAeehOIZCMgwaHewLWM0gjc6ZA6sbXS5Y6ZCj2CuHz2tjVj3Qy795nwJ9B3h7G9y6gYD6WTGIKrOqBr59cqs0vjNci52xflexOFlu6kXjqLK0LnrkxjcTUCopRt0LilXd5BGFlFMj6EXSfyvDJZC49TOjP0H74za4N49BHPQwri7Qn1gNoHe";
 		FacebookClient fbClient4 = new DefaultFacebookClient(accessToken4);
 		
 		String accessToken5 ;//= "EAAGZBEccjciEBAJ37ZAIbHKiL1Mo1HHex2pQTcs41dq8azfBvFGgt4eGgKBq12kSssOof51FKO0niKu7AaVKs3dy8W1ilqp4xcjFD1F9mmjJpVyeDnZAffUXRfh7zXL06BuSwQtfHMJbmJ079qCnkT844brHx966cz73JZBZBFy2Bv1rWu7T1rQddZCVpxywZCO6lDxoWDk2gZDZD";
-		accessToken5 = "EAAEbjUhu2dcBAMnCBP5ZAhYI96q7CZBpiSIT7Uitwfpu7fTsUmGOEad4Dm1tpSZBAlZBwrkEwpRBFsFgI9wteBSb1IQ5q1Q80wM4j6Rm5j76j8z1iWRSrDBRJ6OopcRGxP3brZBOB5yDU0oiZA5FVZCU4ZBYOitpn2kkd1E2nzz7eLNVYorjZAvYuHCpPxelxzbhTicBVKeQT5U9jY3ZA1U7ZAh";	
+		accessToken5 = "EAAEbjUhu2dcBABzhwMNVZCKV9ZBjrgwQLFhZAeehOIZCMgwaHewLWM0gjc6ZA6sbXS5Y6ZCj2CuHz2tjVj3Qy795nwJ9B3h7G9y6gYD6WTGIKrOqBr59cqs0vjNci52xflexOFlu6kXjqLK0LnrkxjcTUCopRt0LilXd5BGFlFMj6EXSfyvDJZC49TOjP0H74za4N49BHPQwri7Qn1gNoHe";	
 		FacebookClient fbClient5 = new DefaultFacebookClient(accessToken5);
 
 		Connection<Post> result = fbClient5.fetchConnection("me/feed",Post.class);
