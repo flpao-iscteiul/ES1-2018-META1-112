@@ -26,7 +26,7 @@ public class XML {
 	static Document doc;
 
 	public static void main(String[] args) {
-		File inputFile = new File("src/DB.xml");
+		File inputFile = new File("DB.xml");
 		DocumentBuilderFactory dbF = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder dB = dbF.newDocumentBuilder();

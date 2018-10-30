@@ -16,8 +16,8 @@ public class SendEmail {
 
     public static void main(String[] args) {
 
-        final String username = ""; //change
-        final String password = ""; // change
+        final String username = "utterly.ap@gmail.com"; //change
+        final String password = "ati128mb"; // change
 
         Properties props = new Properties();
         props.put("mail.smtp.starttls.enable", "true");
@@ -37,7 +37,7 @@ public class SendEmail {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("utterly.ap@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
-                InternetAddress.parse("jglvd@iscte.pt"));
+                InternetAddress.parse("vmbfs@iscte.pt"));
             message.setSubject("Testing Subject");
             message.setText("Dear Mail Crawler,"
                 + "\n\n No spam to my email, please!");
