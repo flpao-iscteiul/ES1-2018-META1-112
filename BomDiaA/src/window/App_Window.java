@@ -23,8 +23,8 @@ public class App_Window {
 	private JFrame frame;
 	private JPanel panel;
 	private JMenuBar menuBar;
-	private JMenu menu, view;
-	private JMenuItem menuItem;
+	private JMenu menu, view,menuItemNew;
+	private JMenuItem  subMenuItemFb, subMenuItemEm,subMenuItemTw,subMenuItemBb;
 	private JCheckBoxMenuItem facebook_checkbox, twitter_checkbox, email_checkbox, blackbord_checkbox;
 	private JButton date_button,source_button,from_button,subjet_button,content_button; 
 
@@ -66,9 +66,21 @@ public class App_Window {
 		view.add(blackbord_checkbox);
 		
 				
-		menuItem = new JMenuItem("SubMenu");//,se quiser uma imagem new ImageIcon("localiazaçao"));
+		menuItemNew = new JMenu("  New  ");//,se quiser uma imagem new ImageIcon("localiazaçao"));
 		
-		menu.add(menuItem);
+		subMenuItemFb = new JMenuItem("Facebook");
+		subMenuItemEm = new JMenuItem("Email");
+		subMenuItemTw = new JMenuItem("Twitter");
+		subMenuItemBb = new JMenuItem("Blackboard");
+		
+		menuItemNew.add(subMenuItemFb);
+		menuItemNew.add(subMenuItemEm);
+		menuItemNew.add(subMenuItemTw);
+		menuItemNew.add(subMenuItemBb);
+		
+		
+		menu.add(menuItemNew);
+		
 		menuBar.add(menu);
 		menuBar.add(view);
 		
@@ -77,6 +89,7 @@ public class App_Window {
 		panel.add(from_button);
 		panel.add(subjet_button);
 		panel.add(content_button);
+		
 		frame.add(panel,BorderLayout.NORTH);
 		frame.setJMenuBar(menuBar);
 
