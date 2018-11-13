@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -18,6 +20,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import email.Email;
 
 public class App_Window {
 	private JFrame frame;
@@ -30,6 +35,7 @@ public class App_Window {
 
 	public App_Window() {
 		addFrameContent();
+		newEmail();
 	}
 
 	public void addFrameContent() {
@@ -94,6 +100,47 @@ public class App_Window {
 		frame.setJMenuBar(menuBar);
 
 		
+	}
+	
+	public void newEmail() {
+		subMenuItemEm.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame frameEmail = new JFrame("New Email");
+				frameEmail.setSize(400, 300);
+				frameEmail.setLocationRelativeTo(frame);
+				frameEmail.setLayout(new GridLayout(4,4));
+				frameEmail.setVisible(true);
+				
+				JLabel toLabel = new JLabel("To ");
+				JLabel subjectLabel = new JLabel("Subject ");
+				JLabel bodyLabel = new JLabel("Body Content");
+				
+				JTextField toText= new JTextField();
+				JTextField subjectText = new JTextField();
+				JTextField bodyText = new JTextField();
+				
+				JButton sendButton = new JButton("Send");
+				sendButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						Email w = new Email();
+						w.sendEmail(toText.getText(), subjectText.getText(), bodyText.getText());
+					}
+				});
+				
+				frameEmail.add(toLabel);
+				frameEmail.add(toText);
+				frameEmail.add(subjectLabel);
+				frameEmail.add(subjectText);
+				frameEmail.add(bodyLabel);
+				frameEmail.add(bodyText);
+				frameEmail.add(sendButton);
+				
+			}
+		});
 	}
 
 	public void open() {
