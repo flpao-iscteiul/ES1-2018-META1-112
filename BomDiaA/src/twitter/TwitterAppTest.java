@@ -1,19 +1,32 @@
 package twitter;
 
-import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-public class TwitterAppTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class TwitterAppTest {
+	
+	TwitterApp t = new TwitterApp();
+
+	@BeforeEach
+	void setUp() throws Exception {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	void testSendTwitter() {
+		String a ="Mestradooo MEI";
+		t.sendTwitter(a);
+		assertEquals(a.isEmpty(), false);
+
+	}
+
+	@Test
+	void testReceiveTwitter() {
+		t.receiveTwitter();
+			assertEquals(t.getOutput().isEmpty(), false);
 	}
 
 }
