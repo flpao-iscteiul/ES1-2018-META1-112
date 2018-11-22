@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -18,6 +20,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import twitter.TwitterApp;
 
 public class App_Window {
 	private JFrame frame;
@@ -30,6 +35,7 @@ public class App_Window {
 
 	public App_Window() {
 		addFrameContent();
+		newTwitter();
 	}
 
 	public void addFrameContent() {
@@ -94,6 +100,41 @@ public class App_Window {
 		frame.setJMenuBar(menuBar);
 
 		
+	}
+	
+	public void newTwitter() {
+		subMenuItemTw.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame frameTwitter = new JFrame("New Twitter");
+				frameTwitter.setSize(400, 300);
+				frameTwitter.setLocationRelativeTo(frame);
+				frameTwitter.setLayout(new GridLayout(2,2));
+				frameTwitter.setVisible(true);
+				
+				JLabel msgLabel = new JLabel("  Mensagem: ");
+				
+				JTextField msgText= new JTextField();
+				
+				
+				JButton sendButton = new JButton("Send");
+				sendButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						TwitterApp w = new TwitterApp();
+						w.sendTwitter(msgText.getText());
+					}
+				});
+				
+				frameTwitter.add(msgLabel);
+				frameTwitter.add(msgText);
+				
+				frameTwitter.add(sendButton);
+				
+			}
+		});
 	}
 
 	public void open() {
