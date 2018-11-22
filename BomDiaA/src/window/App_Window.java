@@ -25,7 +25,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import email.Email;
 import facebook.Connect;
 
 public class App_Window {
