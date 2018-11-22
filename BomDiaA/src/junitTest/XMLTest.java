@@ -1,4 +1,4 @@
-package xml;
+package junitTest;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+
+import xml.XML;
 
 public class XMLTest {
 	XML xml = new XML();
