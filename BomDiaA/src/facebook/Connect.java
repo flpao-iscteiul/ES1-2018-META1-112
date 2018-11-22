@@ -31,7 +31,7 @@ public class Connect {
 	/**
 	 * A counter used to count the number of publications made
 	 */
-	int publicationCounter = 0;
+	public int publicationCounter = 0;
 
 	/**
 	 * List<Group> to receive the list of groups the user belongs to
@@ -108,7 +108,7 @@ public class Connect {
 	 * @return accessToken
 	 */
 	public String getAccessToken() {
-		String accessToken = "EAAIZBo3jKi8IBAEtgb2ZCdZB6Q4YxhwTWROLZC7vw0sU8zhRZAdR2MnZBrsRxCMhhrKUpkfUFYhZBRBIL2ewqpPVfKjoILLZCnZAvYNTrQRfIrsXHB8avFxHLglb2fZBf38CAJXJwpTNaRgyqPQ2ObmiZAsuPUghUik9iTT7AqKz7x0gNjKF3DkbLSBFmybfKe5zqDaLxdP5Hnlgw2wlZCnPXPV8";
+		String accessToken = "EAAIZBo3jKi8IBALcPoIyHwLQ8ICjh4ivHuBsa4vQAWZBDX3uJKy1FGuEEs9eTNZCY0VmlBnZAGQSKhthai0MIzWdanaCZC9sdUiChT1btdmdobPF4blC1e9QjKL5aZCzZCJzELnp8KK4FliR5nOn2F8tNQ7t2gQ0APjufuz9LCjMp8wh4UZCiUKuer2lp5BPOKWp90TDQiQ48iqag1U50uQL";
 		return accessToken;
 	}
 	/**

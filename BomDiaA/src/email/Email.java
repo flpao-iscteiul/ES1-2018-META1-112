@@ -143,7 +143,8 @@ public class Email {
 	}
 	/**
 	 *  This method create a session (Receive Email)
-	 */
+	 *  @throws MessagingException session error
+	 */ 
 	public void receiveEmailSession() throws MessagingException {
 		receiveESession = Session.getInstance(receiveEProperties, null);
 		rSstore = receiveESession.getStore();
@@ -160,7 +161,7 @@ public class Email {
 
 	/**
 	 *  This method open a email inbox
-	 * @throws MessagingException
+	 * @throws MessagingException open inbox error
 	 */
 	public void openInbox() throws MessagingException {
 		inbox = rSstore.getFolder("INBOX");
@@ -180,8 +181,8 @@ public class Email {
 	/**
 	 * This method show a email content
 	 * @return content, return a email content
-	 * @throws MessagingException
-	 * @throws IOException
+	 * @throws MessagingException email content error
+	 * @throws IOException email content error
 	 */
 
 	public String showContent() throws MessagingException, IOException {
@@ -229,8 +230,8 @@ public class Email {
 	 * @param to who is receiving this email
 	 * @param subject email's subject
 	 * @param bodyContent email's bodycontent
-	 * @throws AddressException
-	 * @throws MessagingException
+	 * @throws AddressException send error
+	 * @throws MessagingException send error
 	 */
 	public void transportEmail(String to, String subject,String bodyContent) throws AddressException, MessagingException {
 		Message message = new MimeMessage(sendESession);

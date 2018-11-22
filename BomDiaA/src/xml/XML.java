@@ -256,7 +256,7 @@ public class XML {
 	 * 
 	 * @return the input file name
 	 */
-	static String getInputFileName() {
+	public static String getInputFileName() {
 		return inputFile.getName();
 	}
 
