@@ -20,8 +20,7 @@ public class Aplication extends Thread{
 			e.printStackTrace();
 		}
 		app.open();
+	
 	}
-	
-	
 	
 }
