@@ -7,7 +7,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,10 +26,24 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.traversal.DocumentTraversal;
+import org.w3c.dom.traversal.NodeFilter;
+import org.w3c.dom.traversal.NodeIterator;
+import org.xml.sax.SAXException;
 
 import email.Email;
 import facebook.Connect;
 import twitter.TwitterApp;
+import xml.XML;
+
 
 public class App_Window {
 	private JFrame frame;
@@ -35,12 +53,27 @@ public class App_Window {
 	private JMenuItem  subMenuItemFb, subMenuItemEm,subMenuItemTw,subMenuItemBb;
 	private JCheckBoxMenuItem facebook_checkbox, twitter_checkbox, email_checkbox, blackbord_checkbox;
 	private JButton date_button,source_button,from_button,subjet_button,content_button; 
+	public JTextArea area;
+	private static Element content;
+	private static Element root;
+	private static File inputFile = new File("DB.xml");
+	private static Element node;
+	private static String timeStamp;
 
-	public App_Window() {
+
+
+	public App_Window() throws ParserConfigurationException, SAXException, IOException {
 		addFrameContent();
 		newEmail();
 		makeFacebookPost();
 		newTwitter();
+		DocumentBuilderFactory dbF = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dB = dbF.newDocumentBuilder();
+		Document doc = dB.parse(inputFile);
+		doc.getDocumentElement().normalize();
+		System.out.println("-File Loaded into DOM view-");
+		addContent(doc, "me2@iscte-iul.pt", "eMail", "Delays");
+		readFile(doc);
 	}
 
 	public void addFrameContent() {
@@ -50,6 +83,7 @@ public class App_Window {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		
+		area = new JTextArea();
 		
 		menuBar = new JMenuBar();
 		
@@ -100,6 +134,7 @@ public class App_Window {
 		panel.add(content_button);
 		
 		frame.add(panel,BorderLayout.NORTH);
+		frame.add(area, BorderLayout.CENTER);
 		frame.setJMenuBar(menuBar);
 
 		
@@ -287,6 +322,57 @@ public class App_Window {
 				
 			}
 		});
+	}
+	
+	public void readFile(Document doc) {
+		String s,t=null;
+		DocumentTraversal tr = (DocumentTraversal) doc;
+		NodeList csList = doc.getElementsByTagName("Content");
+		for (int i = 0; i < csList.getLength(); i++) {
+			Node cs = csList.item(i);
+			if (cs.getNodeType() == Node.ELEMENT_NODE) {
+				Element contents = (Element) cs;
+				String date = contents.getAttribute("date");
+				System.out.println("Content date: " + date);
+				//area.setText();
+				NodeList cList = contents.getChildNodes();
+				for (int j = 0; j < cList.getLength(); j++) {
+					Node content = cList.item(j);
+					if (content.getNodeType() == Node.ELEMENT_NODE) {
+						Element c = (Element) content;
+						System.out.println(c.getTagName() + ": " + c.getTextContent());
+
+						area.setText(area.getText()+c.getTagName() + "  :  " + c.getTextContent()+"   ");
+					}
+				}
+				area.setText(area.getText()+"\n"+"\n");
+			}
+		}
+	}
+	
+	public  void addContent(Document doc, String from, String type, String contentText) {
+		System.out.println("-Adding New Content Element-");
+		root = doc.getDocumentElement();
+		root.appendChild(getContent(doc, getTime(), from, type, contentText));
+	}
+	private Node getContent(Document doc, String time, String from, String type, String contentText) {
+		content = doc.createElement("Content");
+		content.setAttribute("Content", time);
+		content.appendChild(getContentElements(doc, content, "From", from));
+		content.appendChild(getContentElements(doc, content, "Type", type));
+		content.appendChild(getContentElements(doc, content, "Content", contentText));
+		return content;
+	}
+	
+	private Node getContentElements(Document doc, Element element, String name, String value) {
+		node = doc.createElement(name);
+		node.appendChild(doc.createTextNode(value));
+		return node;
+	}
+	
+	public static String getTime() {
+		timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+		return timeStamp;
 	}
 	
 	public void open() {
