@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.restfb.BinaryAttachment;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
@@ -25,13 +26,25 @@ import com.restfb.types.User;
  */
 public class Connect {
 	/**
+	 * A set of global variables used to store the information regarding the posts
+	 */
+	List<String> from = new ArrayList();
+	/**
+	 * A set of global variables used to store the information regarding the posts
+	 */
+	List<String> date = new ArrayList();
+	/**
+	 * A set of global variables used to store the information regarding the posts
+	 */
+	List<String> message = new ArrayList();
+	/**
 	 * It's a counter used to count the number of posts in the list
 	 */
 	int counter;
 	/**
 	 * A counter used to count the number of publications made
 	 */
-	public int publicationCounter = 0;
+	int publicationCounter = 0;
 
 	/**
 	 * List<Group> to receive the list of groups the user belongs to
@@ -92,11 +105,43 @@ public class Connect {
 				System.out.println("Message: "+aPost.getMessage());
 				System.out.println("Created: "+aPost.getCreatedTime());
 				counter5++;
+				from.add(aPost.getId());
+				date.add(aPost.getCreatedTime().toString());
+				if(aPost.getMessage() != null) {
+					message.add(aPost.getMessage());
+				}
+				else {
+					String aux = "null";
+					message.add(aux);
+				}
 				this.counter = counter5;
 			}
 		}
 
 		System.out.println("-------------\nNº of Results: " + counter5);	
+	}
+	/**
+	 * A function used to obtain all the "from" values stored in a List
+	 * @return "from" 
+	 */
+	public List<String> getFrom() {
+		return from;
+	}
+
+	/**
+	 * A function used to obtain all the "date" values stored in a List
+	 * @return "date" 
+	 */
+	public List<String> getDate() {
+		return date;
+	}
+
+	/**
+	 * A function used to obtain all the "message" values stored in a List
+	 * @return "Message" 
+	 */
+	public List<String> getMessage() {
+		return message;
 	}
 
 	/**
@@ -108,7 +153,7 @@ public class Connect {
 	 * @return accessToken
 	 */
 	public String getAccessToken() {
-		String accessToken = "EAAIZBo3jKi8IBALcPoIyHwLQ8ICjh4ivHuBsa4vQAWZBDX3uJKy1FGuEEs9eTNZCY0VmlBnZAGQSKhthai0MIzWdanaCZC9sdUiChT1btdmdobPF4blC1e9QjKL5aZCzZCJzELnp8KK4FliR5nOn2F8tNQ7t2gQ0APjufuz9LCjMp8wh4UZCiUKuer2lp5BPOKWp90TDQiQ48iqag1U50uQL";
+		String accessToken = "EAAIZBo3jKi8IBALj079ZCwRZB8TZA4sEZAobUH7qGWC7r1JbSQV54PtQe32p3KimCBGqB6FaubSOSiAIvMnRxBk7fjNT8FjsAvZBZC1ZAnCIyHZBHQAmJNo0y4k8tCnZCyYZCPlNFxSLVK7E0j6R6FyqjqcKeD4wZAbrj9dBNKXL26BoWxjKcawKb0xoOuSaKY8crA8v5B9giezb5AZDZD";
 		return accessToken;
 	}
 	/**
@@ -179,7 +224,7 @@ public class Connect {
 	 */
 	public void publishImageStatus(String name, String directory, String message) throws FileNotFoundException {
 		FileInputStream f = null;
-			f = new FileInputStream(new File(directory));
+		f = new FileInputStream(new File(directory));
 		@SuppressWarnings("deprecation")
 		FacebookType response = getFacebookClient().publish(aGroup.get(0).getId() + "/photos", FacebookType.class, BinaryAttachment.with(name, f),
 				Parameter.with("message", message));
