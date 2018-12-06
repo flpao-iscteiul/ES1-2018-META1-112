@@ -35,7 +35,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.traversal.DocumentTraversal;
 
 import email.Email;
-import facebook_posts.Connect;
+import facebook.Connect;
+import twitter.TwitterApp;
 //import twitter.TwitterApp;
 
 
@@ -298,7 +299,7 @@ public class App_Window {
 		});
 	}
 
-	/*public void newTwitter() {
+	public void newTwitter() {
 		subMenuItemTw.addActionListener(new ActionListener() {
 			
 			@Override
@@ -332,7 +333,7 @@ public class App_Window {
 			}
 		});
 	}
-	*/
+	
 	public void readFile(Document doc) {
 		String s,t=null;
 		DocumentTraversal tr = (DocumentTraversal) doc;
