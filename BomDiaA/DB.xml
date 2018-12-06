@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Contents>
-	<Content date="2018-10-22 15:55:32">
+<Messages>
+	<Message>
+		<Date>2018-10-22 15:55:32</Date>
 		<From>me@iscte-iul.pt</From>
 		<Type>Tweet</Type>
 		<Text>Hello World</Text>
-	</Content>
-<Content Content="2018-10-25 16:15:55">
-<From>me2@iscte-iul.pt</From>
+	</Message>
+<Message>
+<Date>2018-10-25 16:15:55</Date>
+<From>me2@hotmail.com</From>
 <Type>eMail</Type>
-<Content>Delays</Content>
-</Content>
-</Contents>
+<Text>Delays</Text>
+</Message>
+<Message>
+<Date>2018-10-25 16:15:55</Date>
+<From>me2@hotmail.com</From>
+<Type>Facebook</Type>
+<Text>Delays</Text>
+</Message>
+<Message>
+<Date>2018-10-25 16:15:55</Date>
+<From>me2@iscte-iul.pt</From>
+<Type>Blackboard</Type>
+<Text>Delays</Text>
+</Message>
+<Message>
+<Date>2018-10-25 16:15:55</Date>
+<From>me2@hotmail.com</From>
+<Type>eMail</Type>
+<Text>Delays</Text>
+</Message>
+</Messages>
