@@ -76,6 +76,18 @@ public class XML {
 		System.out.println("-File Loaded into DOM view-");
 		addContent(doc, "me2@iscte-iul.pt", "eMail", "Delays");
 		readFile(doc);
+
+		System.out.println("Filter Begins");
+		DocumentTraversal traversal = (DocumentTraversal) doc;
+
+		NodeIterator iterator = traversal.createNodeIterator(doc.getDocumentElement(), NodeFilter.SHOW_ALL,
+				new ItemFilter(), true);
+
+		for (Node n = iterator.nextNode(); n != null; n = iterator.nextNode()) {
+			System.out.println("Element: " + ((Element) n).getTagName());
+			System.out.println(((Element) n).getTagName() + ": " + n.getTextContent());
+		}
+
 //			saveFile(doc);
 	}
 
@@ -188,7 +200,7 @@ public class XML {
 	 */
 	private static Node getContent(Document doc, String time, String from, String type, String contentText) {
 		content = doc.createElement("Content");
-		content.setAttribute("Content", time);
+		content.setAttribute("Date", time);
 		content.appendChild(getContentElements(doc, content, "From", from));
 		content.appendChild(getContentElements(doc, content, "Type", type));
 		content.appendChild(getContentElements(doc, content, "Content", contentText));
@@ -222,7 +234,38 @@ public class XML {
 	private static final class ItemFilter implements NodeFilter {
 		public short acceptNode(Node n) {
 			if (n instanceof Element) {
-				if (((Element) n).getTagName().equals("Type")) {
+				if (((Element) n).getTagName().equals("Content Date")) {
+					System.out.println(((Element) n).getTagName());
+					return NodeFilter.FILTER_ACCEPT;
+				}
+			}
+			return NodeFilter.FILTER_REJECT;
+		}
+		
+		public short acceptNodeFacebook(Node n) {
+			if (n instanceof Element) {
+				if (((Element) n).getTagName().equals("Facebook")) {
+					System.out.println(((Element) n).getTagName());
+					return NodeFilter.FILTER_ACCEPT;
+				}
+			}
+			return NodeFilter.FILTER_REJECT;
+		}
+		
+		public short acceptNodeTwitter(Node n) {
+			if (n instanceof Element) {
+				if (((Element) n).getTagName().equals("Tweet")) {
+					System.out.println(((Element) n).getTagName());
+					return NodeFilter.FILTER_ACCEPT;
+				}
+			}
+			return NodeFilter.FILTER_REJECT;
+		}
+		
+		public short acceptNodeMail(Node n) {
+			if (n instanceof Element) {
+				if (((Element) n).getTagName().equals("eMail")) {
+					System.out.println(((Element) n).getTagName());
 					return NodeFilter.FILTER_ACCEPT;
 				}
 			}
