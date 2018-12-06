@@ -7,7 +7,7 @@ import window.Intro_Window;
 public class Aplication extends Thread{
 
 	
-	public Aplication() {
+	public Aplication() throws Exception {
 		Intro_Window iw = new Intro_Window();
 		App_Window app = new App_Window();
 		iw.open();

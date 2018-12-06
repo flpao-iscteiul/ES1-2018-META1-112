@@ -153,7 +153,7 @@ public class Connect {
 	 * @return accessToken
 	 */
 	public String getAccessToken() {
-		String accessToken = "EAAIZBo3jKi8IBALj079ZCwRZB8TZA4sEZAobUH7qGWC7r1JbSQV54PtQe32p3KimCBGqB6FaubSOSiAIvMnRxBk7fjNT8FjsAvZBZC1ZAnCIyHZBHQAmJNo0y4k8tCnZCyYZCPlNFxSLVK7E0j6R6FyqjqcKeD4wZAbrj9dBNKXL26BoWxjKcawKb0xoOuSaKY8crA8v5B9giezb5AZDZD";
+		String accessToken = "EAAIZBo3jKi8IBAMrS0Jx7MjlMuSJSja92hR2hQaZBM05r24VF4BD3b7xx4viNZBRMeRt5y2ZBqzBgWxzRgF6kZBRtRQ2XlZBCfmAeedWm7qpEy85DgcWBHtipLc661Oo15U3ctRyjX6NdxCBJDriKFnQ1WR3xLKrCbaxYrZAZAP4lZAQZCu5DrdxxfovKA6BZAByxIZBBxI2qjGhPQZDZD";
 		return accessToken;
 	}
 	/**
