@@ -19,7 +19,7 @@ class TestConnect {
 			test.publishMessageStatus("Welp");
 			test.publishLinkStatus("I dont know what im doing", "https://www.youtube.com/watch?v=I8XXfgF9GSc");
 			test.publishImageStatus("Tech", "C:/Users/Francisco/Desktop/iscte.png", "Apps");
-			assertEquals(test.publicationCounter,test.getUserPublicationIDCounter());
+			assertEquals(test.getPublicationCounter(),test.getUserPublicationIDCounter());
 			test.getPublicationCounter();
 		}
 	}
