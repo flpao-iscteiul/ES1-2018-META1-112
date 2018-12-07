@@ -107,7 +107,11 @@ public class Connect {
 	 * @return accessToken
 	 */
 	public String getAccessToken() {
-		String accessToken = "EAAIZBo3jKi8IBABMpJZCAV4F0rg2LOsy0TbUA0UhX65ZAJq6a0KzZBDwfxhZAzvKQMc49SsugqYzQbJZAoocjkESvzxybpRgQFmZB6ONL5xzYiRsWFwOzvZBBNyl4Qt3GifoScZBFDpeKh3vkPPsraBUSOBwnZAhopger4ru06ReMXHf36wBNsEXuhWkaT95lnTZAtx8JCIJMnOi6jBZCGN5G33j";
+		String accessToken = "EAAIZBo3jKi8IBAMTVgSrli9cADWO8zZBPXQnoCd68kypC1tI5UZCQT2MpGQbmRTv6NqGUHeM6DxrEIIRoVnejffoJPtSPYYqlrGx4djEb9AFZAZApPwCwhZAkZCqexZCAhNdlZA08S7srfpb4T3wCJIFwzB1lsubGclQhA0NKbaWDpjZCekZBYy45NjT0WPvZBSdBgc4AuefF4KBWQZDZD\r\n" + 
+				"Fim da conversa de chat\r\n" + 
+				"Escreve uma mensagem...\r\n" + 
+				"\r\n" + 
+				"";
 		return accessToken;
 	}
 
