@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>App_Window.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">BDA.window</a> &gt; <span class="el_source">App_Window.java</span></div><h1>App_Window.java</h1><pre class="source lang-java linenums">package BDA.window;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.mail.MessagingException;
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import BDA.email.Email;
+import BDA.facebook.Connect;
+import BDA.msg.Message;
+import BDA.msg.SocialMessage;
+import BDA.twitter.TwitterApp;
+
+/**
+ * Main application window class This class is used to initialize and manage the
+ * graphical user's main interface
+ * 
+ * @author Francisco
+ * @version Release
+ */
+public class App_Window {
+
+	/**
+	 * Main frame in wich all the other objects will be mounted on
+	 */
+	private JFrame frame;
+	/**
+	 * Panel on which the menu and buttons are mounted
+	 */
+	private JPanel panel;
+	/**
+	 * Respective menus to mount on the panel
+	 */
+	private JMenu menu, view, menuItemNew, fromMenu, contentMenu;
+	/**
+	 * Respective menu bars for improveduser interface interaction
+	 */
+	private JMenuBar menuBar, fromBar, contentBar;
+	/**
+	 * Respective menu items for improved user interface interaction
+	 */
+	private JMenuItem subMenuItemFb, subMenuItemEm, subMenuItemTw;
+	/**
+	 * Respective check boxes for improved user interface interaction
+	 */
+	private JCheckBoxMenuItem facebook_checkbox, twitter_checkbox, email_checkbox, blackbord_checkbox;
+	/**
+	 * Respective buttons for improved user interface interaction
+	 */
+	private JButton date_button;
+	/**
+	 * Search bar fields
+	 */
+	private JTextField fromField, contentField;
+	/**
+	 * Scroll bar
+	 */
+	private JScrollPane scroll;
+	/**
+	 * Main staging are where the database will be printed on
+	 */
+	private JTextArea area;
+	/**
+	 * Respective Element nodes where information is stored in the XML file
+	 * 
+	 * @see Element
+	 */
+	private static Element msg, root, node;
+	/**
+	 * Time stamp to be used as Node id in the XML file with the specific format
+	 * yyyy-MM-dd HH:mm:ss
+	 */
+	private static String timeStamp;
+	/**
+	 * Message Lists used to store messages
+	 */
+	private List&lt;Message&gt; msgList, msgListAux;
+	public List&lt;Message&gt; getMsgList() {
+<span class="fc" id="L117">		return msgList;</span>
+	}
+
+	/**
+	 * XML file database
+	 */
+	private Document doc;
+	/**
+	 * Date sorting auxiliary boolean
+	 */
+	private boolean b;
+
+	/**
+	 * Application Window constructor
+	 * 
+	 * @throws ParserConfigurationException when parser is not configurated
+	 * @throws SAXException                 when SAX fails
+	 * @throws IOException                  when IO fails
+	 * @throws MessagingException           when message fails
+	 */
+<span class="fc" id="L137">	public App_Window()  {</span>
+<span class="fc" id="L138">		addFrameContent();</span>
+<span class="fc" id="L139">		newEmail();</span>
+<span class="fc" id="L140">		makeFacebookPost();</span>
+<span class="fc" id="L141">		newTwitter();</span>
+		try {
+<span class="fc" id="L143">			writeToFile();</span>
+<span class="pc" id="L144">		} catch (ParserConfigurationException | SAXException | IOException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L146">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L148">		readFile();</span>
+
+<span class="fc" id="L150">	}</span>
+
+	/**
+	 * Method used to create and manipulate the main frame
+	 */
+	public void addFrameContent() {
+<span class="fc" id="L156">		frame = new JFrame();</span>
+<span class="fc" id="L157">		frame.setSize(700, 700);</span>
+<span class="fc" id="L158">		frame.setLocationRelativeTo(frame);</span>
+<span class="fc" id="L159">		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="fc" id="L160">		frame.setLayout(new BorderLayout());</span>
+
+<span class="fc" id="L162">		area = new JTextArea();</span>
+<span class="fc" id="L163">		scroll = new JScrollPane(area);</span>
+<span class="fc" id="L164">		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);</span>
+
+<span class="fc" id="L166">		menuBar = new JMenuBar();</span>
+<span class="fc" id="L167">		fromBar = new JMenuBar();</span>
+<span class="fc" id="L168">		contentBar = new JMenuBar();</span>
+
+<span class="fc" id="L170">		facebook_checkbox = new JCheckBoxMenuItem(&quot;Facebook&quot;);</span>
+
+<span class="fc" id="L172">		facebook_checkbox.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L176">				AbstractButton abstractButton = (AbstractButton) e.getSource();</span>
+<span class="nc" id="L177">				boolean selected = abstractButton.getModel().isSelected();</span>
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">				if (selected == true) {</span>
+<span class="nc" id="L180">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;Facebook&quot;)) {</span>
+<span class="nc" id="L183">							msgListAux.remove(i);</span>
+						}
+					}
+<span class="nc bnc" id="L186" title="All 2 branches missed.">					for (Message msg : msgList) {</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">						if (msg.getType().contains(&quot;Facebook&quot;)) {</span>
+<span class="nc" id="L188">							msgListAux.add(msg);</span>
+						}
+					}
+<span class="nc bnc" id="L191" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L192">						area.setText(area.getText() + msg.toString() + &quot;\n&quot;);</span>
+					}
+
+				}
+<span class="nc bnc" id="L196" title="All 2 branches missed.">				if (selected == false) {</span>
+<span class="nc" id="L197">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;Facebook&quot;)) {</span>
+<span class="nc" id="L200">							msgListAux.remove(i);</span>
+
+						}
+					}
+<span class="nc bnc" id="L204" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L205">						area.setText(area.getText() + msg.toString());</span>
+
+					}
+
+				}
+<span class="nc" id="L210">			}</span>
+		});
+
+<span class="fc" id="L213">		twitter_checkbox = new JCheckBoxMenuItem(&quot;Twitter&quot;);</span>
+
+<span class="fc" id="L215">		twitter_checkbox.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L219">				AbstractButton abstractButton = (AbstractButton) e.getSource();</span>
+<span class="nc" id="L220">				boolean selected = abstractButton.getModel().isSelected();</span>
+
+<span class="nc bnc" id="L222" title="All 2 branches missed.">				if (selected == true) {</span>
+<span class="nc" id="L223">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;Tweet&quot;)) {</span>
+<span class="nc" id="L226">							msgListAux.remove(i);</span>
+						}
+					}
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">					for (Message msg : msgList) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">						if (msg.getType().contains(&quot;Tweet&quot;)) {</span>
+<span class="nc" id="L232">							msgListAux.add(msg);</span>
+						}
+					}
+<span class="nc bnc" id="L235" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L236">						area.setText(area.getText() + msg.toString() + &quot;\n&quot;);</span>
+					}
+
+				}
+<span class="nc bnc" id="L240" title="All 2 branches missed.">				if (selected == false) {</span>
+<span class="nc" id="L241">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;Tweet&quot;)) {</span>
+<span class="nc" id="L244">							msgListAux.remove(i);</span>
+
+						}
+					}
+<span class="nc bnc" id="L248" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L249">						area.setText(area.getText() + msg.toString());</span>
+
+					}
+
+				}
+<span class="nc" id="L254">			}</span>
+
+		});
+<span class="fc" id="L257">		email_checkbox = new JCheckBoxMenuItem(&quot;Email&quot;);</span>
+
+<span class="fc" id="L259">		email_checkbox.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L263">				AbstractButton abstractButton = (AbstractButton) e.getSource();</span>
+<span class="nc" id="L264">				boolean selected = abstractButton.getModel().isSelected();</span>
+
+<span class="nc bnc" id="L266" title="All 2 branches missed.">				if (selected == true) {</span>
+<span class="nc" id="L267">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;eMail&quot;)) {</span>
+<span class="nc" id="L270">							msgListAux.remove(i);</span>
+						}
+					}
+
+<span class="nc bnc" id="L274" title="All 2 branches missed.">					for (Message msg : msgList) {</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">						if (msg.getType().contains(&quot;eMail&quot;)) {</span>
+<span class="nc" id="L276">							msgListAux.add(msg);</span>
+						}
+					}
+<span class="nc bnc" id="L279" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L280">						area.setText(area.getText() + msg.toString() + &quot;\n&quot;);</span>
+					}
+
+				}
+<span class="nc bnc" id="L284" title="All 2 branches missed.">				if (selected == false) {</span>
+<span class="nc" id="L285">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;eMail&quot;)) {</span>
+<span class="nc" id="L288">							msgListAux.remove(i);</span>
+
+						}
+					}
+<span class="nc bnc" id="L292" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L293">						area.setText(area.getText() + msg.toString());</span>
+
+					}
+
+				}
+
+<span class="nc" id="L299">			}</span>
+		});
+<span class="fc" id="L301">		blackbord_checkbox = new JCheckBoxMenuItem(&quot;Blackboard&quot;);</span>
+
+<span class="fc" id="L303">		blackbord_checkbox.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L307">				AbstractButton abstractButton = (AbstractButton) e.getSource();</span>
+<span class="nc" id="L308">				boolean selected = abstractButton.getModel().isSelected();</span>
+
+<span class="nc bnc" id="L310" title="All 2 branches missed.">				if (selected == true) {</span>
+<span class="nc" id="L311">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;Blackboard&quot;)) {</span>
+<span class="nc" id="L314">							msgListAux.remove(i);</span>
+						}
+					}
+
+<span class="nc bnc" id="L318" title="All 2 branches missed.">					for (Message msg : msgList) {</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">						if (msg.getType().contains(&quot;Blackboard&quot;)) {</span>
+<span class="nc" id="L320">							msgListAux.add(msg);</span>
+						}
+					}
+<span class="nc bnc" id="L323" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L324">						area.setText(area.getText() + msg.toString() + &quot;\n&quot;);</span>
+					}
+
+				}
+<span class="nc bnc" id="L328" title="All 2 branches missed.">				if (selected == false) {</span>
+<span class="nc" id="L329">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">					for (int i = 0; i &lt; msgListAux.size(); i++) {</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">						if (msgListAux.get(i).getType().contains(&quot;Blackboard&quot;)) {</span>
+<span class="nc" id="L332">							msgListAux.remove(i);</span>
+
+						}
+					}
+<span class="nc bnc" id="L336" title="All 2 branches missed.">					for (Message msg : msgListAux) {</span>
+<span class="nc" id="L337">						area.setText(area.getText() + msg.toString());</span>
+
+					}
+
+				}
+<span class="nc" id="L342">			}</span>
+		});
+
+<span class="fc" id="L345">		panel = new JPanel();</span>
+
+<span class="fc" id="L347">		date_button = new JButton(&quot;Date&quot;);</span>
+
+<span class="fc" id="L349">		date_button.addActionListener(new ActionListener() {</span>
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L352">				area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">				if (b == true) {</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">					for (int i = msgList.size() - 1; i &gt;= 0; i--) {</span>
+<span class="nc" id="L355">						area.setText(area.getText() + msgList.get(i).toString() + &quot;\n&quot;);</span>
+					}
+				}
+<span class="nc bnc" id="L358" title="All 2 branches missed.">				if (b == false) {</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">					for (Message msg : msgList) {</span>
+<span class="nc" id="L360">						area.setText(area.getText() + msg.toString() + &quot;\n&quot;);</span>
+					}
+				}
+<span class="nc bnc" id="L363" title="All 2 branches missed.">				b = !b;</span>
+<span class="nc" id="L364">			}</span>
+		});
+
+<span class="fc" id="L367">		menu = new JMenu(&quot;Menu&quot;);</span>
+<span class="fc" id="L368">		view = new JMenu(&quot;View&quot;);</span>
+<span class="fc" id="L369">		fromMenu = new JMenu(&quot;From                                                               &quot;);</span>
+<span class="fc" id="L370">		contentMenu = new JMenu(&quot;Content                                                             &quot;);</span>
+
+<span class="fc" id="L372">		fromBar.add(fromMenu);</span>
+<span class="fc" id="L373">		contentBar.add(contentMenu);</span>
+
+<span class="fc" id="L375">		fromField = new JTextField(20);</span>
+<span class="fc" id="L376">		fromField.addKeyListener(new KeyListener() {</span>
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+<span class="nc" id="L380">			}</span>
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+<span class="nc" id="L384">			}</span>
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+<span class="nc bnc" id="L388" title="All 2 branches missed.">				if (e.getKeyCode() == KeyEvent.VK_ENTER) {</span>
+<span class="nc" id="L389">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">					for (Message msg : msgList) {</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">						if (msg.getFrom().contains(fromField.getText())) {</span>
+<span class="nc" id="L392">							area.setText(area.getText() + msg.toString() + &quot;\n&quot;);</span>
+						}
+					}
+<span class="nc" id="L395">					fromField.setText(&quot;&quot;);</span>
+				}
+<span class="nc" id="L397">			}</span>
+		});
+
+<span class="fc" id="L400">		contentField = new JTextField(20);</span>
+<span class="fc" id="L401">		contentField.addKeyListener(new KeyListener() {</span>
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+<span class="nc" id="L405">			}</span>
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+<span class="nc" id="L409">			}</span>
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+<span class="nc bnc" id="L413" title="All 2 branches missed.">				if (e.getKeyCode() == KeyEvent.VK_ENTER) {</span>
+<span class="nc" id="L414">					area.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">					for (Message msg : msgList) {</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">						if (msg.getText().contains(contentField.getText())) {</span>
+<span class="nc" id="L417">							area.setText(area.getText() + msg.toString() + &quot;\n&quot;);</span>
+						}
+					}
+<span class="nc" id="L420">					contentField.setText(&quot;&quot;);</span>
+				}
+<span class="nc" id="L422">			}</span>
+		});
+
+<span class="fc" id="L425">		fromMenu.add(fromField);</span>
+<span class="fc" id="L426">		contentMenu.add(contentField);</span>
+
+<span class="fc" id="L428">		panel.setLayout(new GridLayout());</span>
+
+<span class="fc" id="L430">		view.add(facebook_checkbox);</span>
+<span class="fc" id="L431">		view.add(twitter_checkbox);</span>
+<span class="fc" id="L432">		view.add(email_checkbox);</span>
+<span class="fc" id="L433">		view.add(blackbord_checkbox);</span>
+
+<span class="fc" id="L435">		menuItemNew = new JMenu(&quot;  New  &quot;);</span>
+
+<span class="fc" id="L437">		subMenuItemFb = new JMenuItem(&quot;Facebook&quot;);</span>
+<span class="fc" id="L438">		subMenuItemEm = new JMenuItem(&quot;Email&quot;);</span>
+<span class="fc" id="L439">		subMenuItemTw = new JMenuItem(&quot;Twitter&quot;);</span>
+
+<span class="fc" id="L441">		menuItemNew.add(subMenuItemFb);</span>
+<span class="fc" id="L442">		menuItemNew.add(subMenuItemEm);</span>
+<span class="fc" id="L443">		menuItemNew.add(subMenuItemTw);</span>
+
+<span class="fc" id="L445">		menu.add(menuItemNew);</span>
+
+<span class="fc" id="L447">		menuBar.add(menu);</span>
+<span class="fc" id="L448">		menuBar.add(view);</span>
+
+<span class="fc" id="L450">		panel.add(date_button);</span>
+<span class="fc" id="L451">		panel.add(fromBar);</span>
+<span class="fc" id="L452">		panel.add(contentBar);</span>
+
+<span class="fc" id="L454">		frame.add(panel, BorderLayout.NORTH);</span>
+<span class="fc" id="L455">		frame.add(scroll, BorderLayout.CENTER);</span>
+<span class="fc" id="L456">		frame.setJMenuBar(menuBar);</span>
+<span class="fc" id="L457">	}</span>
+
+	/**
+	 * Email interaction with the graphical user interface
+	 */
+	public void newEmail() {
+<span class="fc" id="L463">		subMenuItemEm.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L467">				JFrame frameEmail = new JFrame(&quot;New Email&quot;);</span>
+<span class="nc" id="L468">				frameEmail.setSize(400, 300);</span>
+<span class="nc" id="L469">				frameEmail.setLocationRelativeTo(frame);</span>
+<span class="nc" id="L470">				frameEmail.setLayout(new GridLayout(4, 4));</span>
+<span class="nc" id="L471">				frameEmail.setVisible(true);</span>
+
+<span class="nc" id="L473">				JLabel toLabel = new JLabel(&quot;To &quot;);</span>
+<span class="nc" id="L474">				JLabel subjectLabel = new JLabel(&quot;Subject &quot;);</span>
+<span class="nc" id="L475">				JLabel bodyLabel = new JLabel(&quot;Body Content&quot;);</span>
+
+<span class="nc" id="L477">				JTextField toText = new JTextField();</span>
+<span class="nc" id="L478">				JTextField subjectText = new JTextField();</span>
+<span class="nc" id="L479">				JTextField bodyText = new JTextField();</span>
+
+<span class="nc" id="L481">				JButton sendButton = new JButton(&quot;Send&quot;);</span>
+<span class="nc" id="L482">				sendButton.addActionListener(new ActionListener() {</span>
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L486">						Email w = new Email();</span>
+<span class="nc" id="L487">						w.sendEmail(toText.getText(), subjectText.getText(), bodyText.getText());</span>
+<span class="nc" id="L488">					}</span>
+				});
+
+<span class="nc" id="L491">				frameEmail.add(toLabel);</span>
+<span class="nc" id="L492">				frameEmail.add(toText);</span>
+<span class="nc" id="L493">				frameEmail.add(subjectLabel);</span>
+<span class="nc" id="L494">				frameEmail.add(subjectText);</span>
+<span class="nc" id="L495">				frameEmail.add(bodyLabel);</span>
+<span class="nc" id="L496">				frameEmail.add(bodyText);</span>
+<span class="nc" id="L497">				frameEmail.add(sendButton);</span>
+
+<span class="nc" id="L499">			}</span>
+		});
+<span class="fc" id="L501">	}</span>
+
+	/**
+	 * Facebook interaction with the graphical user interface
+	 */
+	public void makeFacebookPost() {
+<span class="fc" id="L507">		subMenuItemFb.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L511">				JFrame frameFacebook = new JFrame(&quot;New Facebook Post&quot;);</span>
+<span class="nc" id="L512">				frameFacebook.setSize(1000, 200);</span>
+<span class="nc" id="L513">				JPanel panelHolder = new JPanel();</span>
+<span class="nc" id="L514">				panelHolder.setLayout(new GridLayout(1, 2));</span>
+<span class="nc" id="L515">				JPanel panelHolder2 = new JPanel();</span>
+<span class="nc" id="L516">				panelHolder2.setLayout(new GridLayout(1, 3));</span>
+<span class="nc" id="L517">				JPanel panelHolder3 = new JPanel();</span>
+<span class="nc" id="L518">				panelHolder3.setLayout(new GridLayout(1, 4));</span>
+<span class="nc" id="L519">				JPanel panelHolder4 = new JPanel();</span>
+<span class="nc" id="L520">				panelHolder4.setLayout(new GridLayout(1, 3));</span>
+<span class="nc" id="L521">				frameFacebook.setLayout(new GridLayout(4, 1));</span>
+<span class="nc" id="L522">				frameFacebook.setLocationRelativeTo(frame);</span>
+<span class="nc" id="L523">				frameFacebook.setVisible(true);</span>
+
+<span class="nc" id="L525">				JLabel postMessage = new JLabel(&quot;Insert Message &quot;);</span>
+<span class="nc" id="L526">				JLabel postLink = new JLabel(&quot;Insert Message &amp; Link&quot;);</span>
+<span class="nc" id="L527">				JLabel postImage = new JLabel(&quot;Insert Image Name &amp; Directory &amp; Message&quot;);</span>
+
+<span class="nc" id="L529">				JTextField simpleMessage = new JTextField();</span>
+<span class="nc" id="L530">				JTextField linkMessage = new JTextField();</span>
+<span class="nc" id="L531">				JTextField link = new JTextField();</span>
+<span class="nc" id="L532">				JTextField imageName = new JTextField();</span>
+<span class="nc" id="L533">				JTextField directory = new JTextField();</span>
+<span class="nc" id="L534">				JTextField imageMessage = new JTextField();</span>
+
+<span class="nc" id="L536">				JButton sendPost = new JButton(&quot;SendMessage&quot;);</span>
+<span class="nc" id="L537">				JButton sendPost2 = new JButton(&quot;SendLink&quot;);</span>
+<span class="nc" id="L538">				JButton sendPost3 = new JButton(&quot;SendImage&quot;);</span>
+<span class="nc" id="L539">				sendPost.addActionListener(new ActionListener() {</span>
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L543">						Connect c = new Connect();</span>
+<span class="nc" id="L544">						c.establishConnection();</span>
+
+<span class="nc bnc" id="L546" title="All 2 branches missed.">						if (!simpleMessage.getText().equals(null)) {</span>
+
+<span class="nc" id="L548">							c.publishMessageStatus(simpleMessage.getText());</span>
+<span class="nc" id="L549">							simpleMessage.setText(null);</span>
+						}
+<span class="nc" id="L551">					}</span>
+				});
+
+<span class="nc" id="L554">				sendPost2.addActionListener(new ActionListener() {</span>
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L558">						Connect c = new Connect();</span>
+<span class="nc" id="L559">						c.establishConnection();</span>
+
+<span class="nc bnc" id="L561" title="All 2 branches missed.">						if (!link.getText().equals(null)) {</span>
+<span class="nc" id="L562">							c.publishLinkStatus(linkMessage.getText(), link.getText());</span>
+<span class="nc" id="L563">							linkMessage.setText(null);</span>
+<span class="nc" id="L564">							link.setText(null);</span>
+						}
+
+<span class="nc" id="L567">					}</span>
+				});
+
+<span class="nc" id="L570">				sendPost3.addActionListener(new ActionListener() {</span>
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L574">						Connect c = new Connect();</span>
+<span class="nc" id="L575">						c.establishConnection();</span>
+
+<span class="nc bnc" id="L577" title="All 4 branches missed.">						if (!imageName.getText().equals(null) &amp;&amp; !directory.getText().equals(null)) {</span>
+
+							try {
+<span class="nc" id="L580">								c.publishImageStatus(imageName.getText(), directory.getText(), imageMessage.getText());</span>
+<span class="nc" id="L581">							} catch (FileNotFoundException e1) {</span>
+<span class="nc" id="L582">								e1.printStackTrace();</span>
+							}
+<span class="nc" id="L584">							imageName.setText(null);</span>
+<span class="nc" id="L585">							directory.setText(null);</span>
+<span class="nc" id="L586">							imageMessage.setText(null);</span>
+
+						}
+<span class="nc" id="L589">					}</span>
+				});
+
+<span class="nc" id="L592">				panelHolder.add(postMessage);</span>
+<span class="nc" id="L593">				panelHolder.add(simpleMessage);</span>
+<span class="nc" id="L594">				panelHolder2.add(postLink);</span>
+<span class="nc" id="L595">				panelHolder2.add(linkMessage);</span>
+<span class="nc" id="L596">				panelHolder2.add(link);</span>
+<span class="nc" id="L597">				panelHolder3.add(postImage);</span>
+<span class="nc" id="L598">				panelHolder3.add(imageName);</span>
+<span class="nc" id="L599">				panelHolder3.add(directory);</span>
+<span class="nc" id="L600">				panelHolder3.add(imageMessage);</span>
+<span class="nc" id="L601">				panelHolder4.add(sendPost);</span>
+<span class="nc" id="L602">				panelHolder4.add(sendPost2);</span>
+<span class="nc" id="L603">				panelHolder4.add(sendPost3);</span>
+<span class="nc" id="L604">				frameFacebook.add(panelHolder);</span>
+<span class="nc" id="L605">				frameFacebook.add(panelHolder2);</span>
+<span class="nc" id="L606">				frameFacebook.add(panelHolder3);</span>
+<span class="nc" id="L607">				frameFacebook.add(panelHolder4);</span>
+<span class="nc" id="L608">			}</span>
+		});
+<span class="fc" id="L610">	}</span>
+
+	/**
+	 * Twitter interaction with the graphical user interface
+	 */
+	public void newTwitter() {
+<span class="fc" id="L616">		subMenuItemTw.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L620">				JFrame frameTwitter = new JFrame(&quot;New Twitter&quot;);</span>
+<span class="nc" id="L621">				frameTwitter.setSize(400, 300);</span>
+<span class="nc" id="L622">				frameTwitter.setLocationRelativeTo(frame);</span>
+<span class="nc" id="L623">				frameTwitter.setLayout(new GridLayout(2, 2));</span>
+<span class="nc" id="L624">				frameTwitter.setVisible(true);</span>
+
+<span class="nc" id="L626">				JLabel msgLabel = new JLabel(&quot;  Mensagem: &quot;);</span>
+
+<span class="nc" id="L628">				JTextField msgText = new JTextField();</span>
+
+<span class="nc" id="L630">				JButton sendButton = new JButton(&quot;Send&quot;);</span>
+<span class="nc" id="L631">				sendButton.addActionListener(new ActionListener() {</span>
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L635">						TwitterApp w = new TwitterApp();</span>
+<span class="nc" id="L636">						w.sendTwitter(msgText.getText());</span>
+<span class="nc" id="L637">					}</span>
+				});
+
+<span class="nc" id="L640">				frameTwitter.add(msgLabel);</span>
+<span class="nc" id="L641">				frameTwitter.add(msgText);</span>
+<span class="nc" id="L642">				frameTwitter.add(sendButton);</span>
+<span class="nc" id="L643">			}</span>
+		});
+<span class="fc" id="L645">	}</span>
+
+	/**
+	 * This method parses the XML database file onto a DOM View to later be
+	 * manipulated
+	 */
+	public void readFile() {
+<span class="fc" id="L652">		String filePath = &quot;DB.xml&quot;;</span>
+<span class="fc" id="L653">		File xmlFile = new File(filePath);</span>
+<span class="fc" id="L654">		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+		DocumentBuilder dBuilder;
+		try {
+<span class="fc" id="L657">			dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="fc" id="L658">			Document doc = dBuilder.parse(xmlFile);</span>
+<span class="fc" id="L659">			doc.getDocumentElement().normalize();</span>
+<span class="fc" id="L660">			NodeList nodeList = doc.getElementsByTagName(&quot;Message&quot;);</span>
+
+<span class="fc" id="L662">			msgListAux = new ArrayList&lt;Message&gt;();</span>
+<span class="fc" id="L663">			msgList = new ArrayList&lt;Message&gt;();</span>
+<span class="fc bfc" id="L664" title="All 2 branches covered.">			for (int i = 0; i &lt; nodeList.getLength(); i++) {</span>
+<span class="fc" id="L665">				msgList.add(getMessage(nodeList.item(i)));</span>
+			}
+<span class="fc bfc" id="L667" title="All 2 branches covered.">			for (Message msg : msgList) {</span>
+<span class="fc" id="L668">				area.setText(area.getText() + &quot;\n&quot; + msg.toString());</span>
+			}
+<span class="pc" id="L670">		} catch (Exception e) {</span>
+<span class="nc" id="L671">			e.printStackTrace();</span>
+		}
+
+<span class="fc" id="L674">	}</span>
+
+	/**
+	 * This method is used to get a certain node from de XML database file as a
+	 * Message object
+	 * 
+	 * @param node selected node to be transformed to Message object
+	 * @return Message
+	 */
+	private static Message getMessage(Node node) {
+<span class="fc" id="L684">		Message msg = new Message();</span>
+<span class="pc bpc" id="L685" title="1 of 2 branches missed.">		if (node.getNodeType() == Node.ELEMENT_NODE) {</span>
+<span class="fc" id="L686">			Element element = (Element) node;</span>
+<span class="fc" id="L687">			msg.setDate(getTagValue(&quot;Date&quot;, element));</span>
+<span class="fc" id="L688">			msg.setFrom(getTagValue(&quot;From&quot;, element));</span>
+<span class="fc" id="L689">			msg.setType(getTagValue(&quot;Type&quot;, element));</span>
+<span class="fc" id="L690">			msg.setText(getTagValue(&quot;Text&quot;, element));</span>
+		}
+
+<span class="fc" id="L693">		return msg;</span>
+	}
+
+	/**
+	 * Method used to get the tag value from an Element node
+	 * 
+	 * @param tag     tag selected to extract the value from
+	 * @param element selected element to extract the tag value from
+	 * @return tag value
+	 */
+	private static String getTagValue(String tag, Element element) {
+<span class="fc" id="L704">		NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();</span>
+<span class="fc" id="L705">		Node node = (Node) nodeList.item(0);</span>
+<span class="fc" id="L706">		return node.getNodeValue();</span>
+	}
+
+	/**
+	 * This method adds a Message to the XML database file
+	 * 
+	 * @param doc         database destination
+	 * @param from        message address
+	 * @param type        message type
+	 * @param contentText message contents
+	 */
+	public static void addMessage(Document doc, String from, String type, String contentText) {
+<span class="fc" id="L718">		root = doc.getDocumentElement();</span>
+<span class="fc" id="L719">		root.appendChild(getMessage(doc, getTime(), from, type, contentText));</span>
+<span class="fc" id="L720">	}</span>
+
+	/**
+	 * Returns the time stamp to be used as Node attribute in the XML file with the
+	 * specific format yyyy-MM-dd HH:mm:ss
+	 * 
+	 * @return timeStamp in the specified format
+	 */
+	public static String getTime() {
+<span class="fc" id="L729">		timeStamp = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;).format(Calendar.getInstance().getTime());</span>
+<span class="fc" id="L730">		return timeStamp;</span>
+	}
+
+	/**
+	 * This method returns a specific Message node from the XML database file to be
+	 * manipulated as a Node
+	 * 
+	 * @param doc         source XML database file
+	 * @param time        message date
+	 * @param from        message address
+	 * @param type        message type
+	 * @param contentText message contents as text
+	 * @return message Node
+	 * @see Node
+	 */
+	private static Node getMessage(Document doc, String time, String from, String type, String contentText) {
+<span class="fc" id="L746">		msg = doc.createElement(&quot;Message&quot;);</span>
+<span class="fc" id="L747">		msg.appendChild(getMessageElements(doc, msg, &quot;Date&quot;, time));</span>
+<span class="fc" id="L748">		msg.appendChild(getMessageElements(doc, msg, &quot;From&quot;, from));</span>
+<span class="fc" id="L749">		msg.appendChild(getMessageElements(doc, msg, &quot;Type&quot;, type));</span>
+<span class="fc" id="L750">		msg.appendChild(getMessageElements(doc, msg, &quot;Text&quot;, contentText));</span>
+<span class="fc" id="L751">		return msg;</span>
+	}
+
+	/**
+	 * This method returns a specific Message Element node from the XML database
+	 * file to be manipulated as a Node
+	 * 
+	 * @param doc     source XML database file
+	 * @param element Element Node
+	 * @param name    Element name
+	 * @param value   Element value
+	 * @return message Node
+	 * @see Node
+	 */
+	private static Node getMessageElements(Document doc, Element element, String name, String value) {
+<span class="fc" id="L766">		node = doc.createElement(name);</span>
+<span class="fc" id="L767">		node.appendChild(doc.createTextNode(value));</span>
+<span class="fc" id="L768">		return node;</span>
+	}
+
+	/**
+	 * 
+	 * This method saves the DOM structure of the XML file in memory to the
+	 * database.
+	 * 
+	 * @param doc this interface represents the entire XML document. Conceptually,
+	 *            it is the root of the document tree, and provides the primary
+	 *            access to the document's data.
+	 * @throws Exception failed to save XML file
+	 */
+	public static void saveFile(Document doc) throws Exception {
+<span class="fc" id="L782">		Transformer transformer = TransformerFactory.newInstance().newTransformer();</span>
+<span class="fc" id="L783">		transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);</span>
+<span class="fc" id="L784">		StreamResult result = new StreamResult(new FileOutputStream(&quot;DB.xml&quot;));</span>
+<span class="fc" id="L785">		DOMSource source = new DOMSource(doc);</span>
+<span class="fc" id="L786">		transformer.transform(source, result);</span>
+<span class="fc" id="L787">	}</span>
+
+	/**
+	 * 
+	 * This method saves the DOM structure of the XML file in memory to the
+	 * database.
+	 * 
+	 * @throws ParserConfigurationException when parser is not configurated
+	 * @throws SAXException                 when SAX fails
+	 * @throws IOException                  when IO fails
+	 */
+	public void writeToFile() throws ParserConfigurationException, SAXException, IOException {
+<span class="fc" id="L799">		DocumentBuilderFactory dbF = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L800">		DocumentBuilder dB = dbF.newDocumentBuilder();</span>
+<span class="fc" id="L801">		doc = dB.parse(&quot;DB.xml&quot;);</span>
+<span class="fc" id="L802">		doc.getDocumentElement().normalize();</span>
+<span class="fc" id="L803">		Email em = new Email();</span>
+		// TwitterApp t = new TwitterApp();
+
+//		Connect c = new Connect();
+//		c.establishConnection();
+//		for(int i = 0; i&lt;c.getPostSize();i++ ) {
+//			addContent(doc,c.getFrom().get(i), &quot;Facebook&quot;,c.getMessage().get(i));
+//		}
+		try {
+<span class="fc" id="L812">			em.receivingEmail();</span>
+<span class="fc" id="L813">			em.showContent();</span>
+<span class="fc bfc" id="L814" title="All 2 branches covered.">			for (SocialMessage me : em.getMeList()) {</span>
+<span class="fc" id="L815">				addMessage(doc, me.getFrom(), &quot;eMail&quot;, me.getContent());</span>
+			}
+//			t.receiveTwitter();
+//			for(MessageEmail twi: t.getTwitterList()) {
+//				addMessage(doc, twi.getFrom(), &quot;Twitter&quot;, twi.getContent());
+//			}
+
+<span class="fc" id="L822">			saveFile(doc);</span>
+<span class="pc" id="L823">		} catch (Exception e1) {</span>
+<span class="nc" id="L824">			e1.printStackTrace();</span>
+		}
+
+<span class="fc" id="L827">	}</span>
+
+	/**
+	 * This method makes the main frame visible
+	 */
+	public void open() {
+<span class="nc" id="L833">		frame.setVisible(true);</span>
+<span class="nc" id="L834">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

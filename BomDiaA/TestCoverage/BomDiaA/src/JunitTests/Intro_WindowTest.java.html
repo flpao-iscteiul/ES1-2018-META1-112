@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Intro_WindowTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">JunitTests</a> &gt; <span class="el_source">Intro_WindowTest.java</span></div><h1>Intro_WindowTest.java</h1><pre class="source lang-java linenums">package JunitTests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import BDA.window.Intro_Window;
+
+<span class="fc" id="L9">public class Intro_WindowTest {</span>
+<span class="fc" id="L10">	Intro_Window w = new Intro_Window();</span>
+
+	@Test
+	public void testGetFrame() {
+<span class="fc" id="L14">		assertEquals(w.getFrame().isEnabled(), true);</span>
+<span class="fc" id="L15">	}</span>
+
+	@Test
+	public void testIntro_Window() {
+<span class="fc" id="L19">		assertEquals(w.getClass(), BDA.window.Intro_Window.class);</span>
+<span class="fc" id="L20">	}</span>
+
+	@Test
+	public void testAddFrameContent() {
+<span class="fc" id="L24">		w.addFrameContent();</span>
+<span class="fc" id="L25">		assertEquals(w.getFrame().isActive(), false);</span>
+<span class="fc" id="L26">	}</span>
+
+	@Test
+	public void testOpen() {
+<span class="fc" id="L30">		w.open();</span>
+<span class="fc" id="L31">		boolean g = w.getFrame().isVisible();</span>
+<span class="fc" id="L32">		assertEquals(g, true);</span>
+<span class="fc" id="L33">	}</span>
+
+	@Test
+	public void testClose() {
+<span class="fc" id="L37">		w.close();</span>
+<span class="fc" id="L38">		boolean g = w.getFrame().isVisible();</span>
+<span class="fc" id="L39">		assertEquals(g, false);</span>
+<span class="fc" id="L40">		assertEquals(w.getFrame().isEnabled(), false);</span>
+<span class="fc" id="L41">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

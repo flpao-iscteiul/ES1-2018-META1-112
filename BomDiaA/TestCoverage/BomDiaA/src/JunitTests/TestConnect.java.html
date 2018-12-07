@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestConnect.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">JunitTests</a> &gt; <span class="el_source">TestConnect.java</span></div><h1>TestConnect.java</h1><pre class="source lang-java linenums">package JunitTests;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.FileNotFoundException;
+
+import org.junit.jupiter.api.Test;
+
+import BDA.facebook.Connect;
+
+<span class="nc" id="L11">class TestConnect {</span>
+
+	@Test
+	void test() throws FileNotFoundException {
+<span class="nc" id="L15">		Connect test = new Connect();</span>
+<span class="nc" id="L16">		test.establishConnection();</span>
+<span class="nc" id="L17">		test.printPosts();</span>
+<span class="nc" id="L18">		assertEquals(test.getPostSize(), test.getCounter());</span>
+<span class="nc" id="L19">		test.publishMessageStatus(&quot;Welp&quot;);</span>
+<span class="nc" id="L20">		test.publishLinkStatus(&quot;I dont know what im doing&quot;, &quot;https://www.youtube.com/watch?v=I8XXfgF9GSc&quot;);</span>
+<span class="nc" id="L21">		test.publishImageStatus(&quot;Tech&quot;, &quot;C:/Users/Francisco/Desktop/iscte.png&quot;, &quot;Apps&quot;);</span>
+<span class="nc" id="L22">		assertEquals(test.getPublicationCounter(), test.getUserPublicationIDCounter());</span>
+<span class="nc" id="L23">		test.getPublicationCounter();</span>
+<span class="nc" id="L24">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

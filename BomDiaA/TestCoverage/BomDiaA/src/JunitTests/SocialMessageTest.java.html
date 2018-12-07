@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SocialMessageTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">JunitTests</a> &gt; <span class="el_source">SocialMessageTest.java</span></div><h1>SocialMessageTest.java</h1><pre class="source lang-java linenums">package JunitTests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import BDA.msg.SocialMessage;
+
+<span class="fc" id="L9">public class SocialMessageTest {</span>
+<span class="fc" id="L10">	private SocialMessage m=new SocialMessage(&quot;2018-05-12 21:34:23&quot;, &quot;eMail&quot;, &quot;abc@iscte.iul.pt&quot;);</span>
+
+	@Test
+	public void testSocialMessage() {
+<span class="fc" id="L14">		assertEquals(m.getClass(), BDA.msg.SocialMessage.class);</span>
+<span class="fc" id="L15">	}</span>
+
+	@Test
+	public void testGetDate() {
+<span class="fc" id="L19">		assertEquals(m.getDate(), &quot;2018-05-12 21:34:23&quot;);</span>
+<span class="fc" id="L20">	}</span>
+
+	@Test
+	public void testGetFrom() {
+<span class="fc" id="L24">		assertEquals(m.getFrom(),&quot;eMail&quot;);</span>
+<span class="fc" id="L25">	}</span>
+
+	@Test
+	public void testGetContent() {
+<span class="fc" id="L29">		assertEquals(m.getContent(),&quot;abc@iscte.iul.pt&quot;);</span>
+<span class="fc" id="L30">	}</span>
+
+	@Test
+	public void testSetDate() {
+<span class="fc" id="L34">		m.setDate(&quot;2018-05-12 21:34:23&quot;);</span>
+<span class="fc" id="L35">		assertEquals(m.getDate(),&quot;2018-05-12 21:34:23&quot;);</span>
+<span class="fc" id="L36">	}</span>
+
+	@Test
+	public void testSetFrom() {
+<span class="fc" id="L40">		m.setFrom(&quot;absd@iscte.pt&quot;);</span>
+<span class="fc" id="L41">		assertEquals(m.getFrom(),&quot;absd@iscte.pt&quot;);</span>
+<span class="fc" id="L42">	}</span>
+
+	@Test
+	public void testSetContent() {
+<span class="fc" id="L46">		m.setContent(&quot;test&quot;);</span>
+<span class="fc" id="L47">		assertEquals(m.getContent(),&quot;test&quot;);</span>
+<span class="fc" id="L48">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

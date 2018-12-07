@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Email.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">BDA.email</a> &gt; <span class="el_source">Email.java</span></div><h1>Email.java</h1><pre class="source lang-java linenums">package BDA.email;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Properties;
+import javax.mail.Address;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import BDA.msg.SocialMessage;
+
+/**
+ * Date: 19/11/2018 This class allows to send and receive emails
+ * 
+ * @author Francisco
+ * @version Release
+ */
+<span class="fc" id="L36">public class Email {</span>
+
+	/**
+	 * String to be used as username for the users email
+	 */
+	public static final String USERNAME = &quot;utterly.ap@gmail.com&quot;;
+	/**
+	 * String to be used as the users password
+	 */
+	public static final String PASSWORD = &quot;ati128mb&quot;;
+	/**
+	 * Sent email content properties, such as protocols to be used
+	 */
+	private Properties sendEProperties;
+	/**
+	 * Receiving email properties, such as hosts and protocols to be used
+	 */
+	private Properties receiveEProperties;
+	/**
+	 * Session setup to receive emails
+	 */
+	private Session receiveESession;
+	/**
+	 * Session setup to send emails
+	 */
+	private Session sendESession;
+	/**
+	 * Store session to receive emails
+	 */
+	private Store rSstore;
+	/**
+	 * Folder to be used as fetching point for further emails
+	 */
+	private Folder inbox;
+	/**
+	 * Email message constructor to later be used for the xml file database0
+	 */
+	private Message msg;
+	/**
+	 * List of Email messages to be called in the application window
+	 */
+<span class="fc" id="L77">	private List&lt;SocialMessage&gt; meList = new ArrayList&lt;&gt;();</span>
+
+	/**
+	 * This method is used to receive email's by establishing a connection with the
+	 * mail server host
+	 * 
+	 * @see Properties
+	 * @see Session
+	 * @see Store
+	 * @see Folder
+	 * @see Message
+	 * @see Address
+	 * @see Multipart
+	 * @see MimeBodyPart
+	 */
+	public void receivingEmail() {
+<span class="fc" id="L93">		receiveEmailProperties();</span>
+		try {
+<span class="fc" id="L95">			receiveEmailSession();</span>
+<span class="fc" id="L96">			openInbox();</span>
+<span class="fc" id="L97">			showContent();</span>
+<span class="pc" id="L98">		} catch (Exception mex) {</span>
+<span class="nc" id="L99">			mex.printStackTrace();</span>
+		}
+<span class="fc" id="L101">	}</span>
+
+	/**
+	 * This method send customized email to the address of your choosing
+	 * 
+	 * @param to          email's recipient
+	 * @param subject     email's subject
+	 * @param bodyContent email's body content
+	 * @see Properties
+	 * @see Session
+	 * @see Message
+	 * @see Transport
+	 */
+	public void sendEmail(String to, String subject, String bodyContent) {
+<span class="nc" id="L115">		sendEmailProperties();</span>
+<span class="nc" id="L116">		passwordAuthentication();</span>
+		try {
+<span class="nc" id="L118">			transportEmail(to, subject, bodyContent);</span>
+<span class="nc" id="L119">		} catch (MessagingException e) {</span>
+<span class="nc" id="L120">			throw new RuntimeException(e);</span>
+		}
+<span class="nc" id="L122">	}</span>
+
+	/**
+	 * This method serves as a protocol initiator in the email's properties
+	 */
+	public void sendEmailProperties() {
+<span class="fc" id="L128">		sendEProperties = new Properties();</span>
+<span class="fc" id="L129">		sendEProperties.put(&quot;mail.smtp.starttls.enable&quot;, &quot;true&quot;);</span>
+<span class="fc" id="L130">		sendEProperties.put(&quot;mail.smtp.auth&quot;, &quot;true&quot;);</span>
+<span class="fc" id="L131">		sendEProperties.put(&quot;mail.smtp.host&quot;, &quot;smtp.gmail.com&quot;);</span>
+<span class="fc" id="L132">		sendEProperties.put(&quot;mail.smtp.port&quot;, &quot;587&quot;);</span>
+<span class="fc" id="L133">	}</span>
+
+	/**
+	 * This method establishes which protocols are accepted in receiving emails
+	 */
+	public void receiveEmailProperties() {
+<span class="fc" id="L139">		receiveEProperties = new Properties();</span>
+<span class="fc" id="L140">		receiveEProperties.put(&quot;mail.pop3.socketFactory.class&quot;, &quot;javax.net.ssl.SSLSocketFactory&quot;);</span>
+<span class="fc" id="L141">		receiveEProperties.put(&quot;mail.pop3.socketFactory.fallback&quot;, &quot;false&quot;);</span>
+<span class="fc" id="L142">		receiveEProperties.put(&quot;mail.pop3.socketFactory.port&quot;, &quot;995&quot;);</span>
+<span class="fc" id="L143">		receiveEProperties.put(&quot;mail.pop3.port&quot;, &quot;995&quot;);</span>
+<span class="fc" id="L144">		receiveEProperties.put(&quot;mail.pop3.host&quot;, &quot;pop.gmail.com&quot;);</span>
+<span class="fc" id="L145">		receiveEProperties.put(&quot;mail.pop3.user&quot;, Email.USERNAME);</span>
+<span class="fc" id="L146">		receiveEProperties.put(&quot;mail.store.protocol&quot;, &quot;pop3&quot;);</span>
+<span class="fc" id="L147">		receiveEProperties.put(&quot;mail.pop3.ssl.trust&quot;, &quot;*&quot;);</span>
+<span class="fc" id="L148">	}</span>
+
+	/**
+	 * This method creates a sessionin wich to receive emails
+	 * 
+	 * @throws MessagingException session error when session error ocurs
+	 */
+	public void receiveEmailSession() throws MessagingException {
+<span class="fc" id="L156">		receiveESession = Session.getInstance(receiveEProperties, null);</span>
+<span class="fc" id="L157">		rSstore = receiveESession.getStore();</span>
+<span class="fc" id="L158">		rSstore.connect(&quot;imap.gmail.com&quot;, &quot;utterly.ap@gmail.com&quot;, &quot;ati128mb&quot;);</span>
+<span class="fc" id="L159">	}</span>
+
+	/**
+	 * This method opens an email inbox
+	 * 
+	 * @throws MessagingException open inbox error
+	 */
+	public void openInbox() throws MessagingException {
+<span class="fc" id="L167">		inbox = rSstore.getFolder(&quot;INBOX&quot;);</span>
+<span class="fc" id="L168">		inbox.open(Folder.READ_ONLY);</span>
+<span class="fc" id="L169">		msg = inbox.getMessage(inbox.getMessageCount());</span>
+<span class="fc" id="L170">	}</span>
+
+	/**
+	 * This method shows an email's content
+	 * 
+	 * @throws MessagingException           email content error
+	 * @throws IOException                  email content error
+	 * @throws ParserConfigurationException when parser fails
+	 * @throws SAXException                 when SAX fails
+	 */
+
+	public void showContent() throws MessagingException, IOException, ParserConfigurationException, SAXException {
+<span class="fc" id="L182">		String contentType = msg.getContentType();</span>
+<span class="fc" id="L183">		String messageContent = &quot;&quot;;</span>
+
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (contentType.contains(&quot;multipart&quot;)) {</span>
+<span class="fc" id="L186">			Multipart multiPart = (Multipart) msg.getContent();</span>
+<span class="fc" id="L187">			int numberOfParts = multiPart.getCount();</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			for (int partCount = 0; partCount &lt; numberOfParts; partCount++) {</span>
+<span class="fc" id="L189">				MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);</span>
+<span class="fc" id="L190">				messageContent = part.getContent().toString();</span>
+			}
+<span class="pc bnc" id="L192" title="All 4 branches missed.">		} else if (contentType.contains(&quot;text/plain&quot;) || contentType.contains(&quot;text/html&quot;)) {</span>
+<span class="nc" id="L193">			Object content = msg.getContent();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">			if (content != null) {</span>
+<span class="nc" id="L195">				messageContent = content.toString();</span>
+			}
+		}
+
+<span class="fc" id="L199">		Message[] messages = inbox.getMessages();</span>
+<span class="fc" id="L200">		String result = messageContent.substring(messageContent.indexOf(&quot;div dir&quot;) + 1,</span>
+<span class="fc" id="L201">				messageContent.indexOf(&quot;&lt;/div&gt;&quot;));</span>
+<span class="fc" id="L202">		String[] output = result.split(&quot;&gt;&quot;);</span>
+<span class="fc" id="L203">		DocumentBuilderFactory dbF = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L204">		DocumentBuilder dB = dbF.newDocumentBuilder();</span>
+<span class="fc" id="L205">		Document doc = dB.parse(&quot;DB.xml&quot;);</span>
+<span class="fc" id="L206">		doc.getDocumentElement().normalize();</span>
+
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (int i = 0; i &lt; messages.length; i++) {</span>
+<span class="fc" id="L209">			Message message = messages[i];</span>
+<span class="fc" id="L210">			String content = &quot;Subject: &quot; + msg.getSubject() + &quot;\n&quot; + &quot;Message: &quot; + output[1];</span>
+<span class="fc" id="L211">			SocialMessage me = new SocialMessage(</span>
+<span class="fc" id="L212">					new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;).format(Calendar.getInstance().getTime()),</span>
+<span class="fc" id="L213">					message.getFrom()[0].toString(), content);</span>
+<span class="fc" id="L214">			meList.add(me);</span>
+		}
+<span class="fc" id="L216">	}</span>
+
+	/**
+	 * This method does a password authentication check
+	 */
+	public void passwordAuthentication() {
+<span class="nc" id="L222">		sendESession = Session.getInstance(sendEProperties, new javax.mail.Authenticator() {</span>
+			protected PasswordAuthentication getPasswordAuthentication() {
+<span class="nc" id="L224">				return new PasswordAuthentication(USERNAME, PASSWORD);</span>
+			}
+		});
+<span class="nc" id="L227">	}</span>
+
+	/**
+	 * This method creates an email and respectively sends it to the specified
+	 * address
+	 * 
+	 * @param to          email's recipient
+	 * @param subject     email's subject
+	 * @param bodyContent email's content
+	 * @throws AddressException   send error
+	 * @throws MessagingException send error
+	 */
+	public void transportEmail(String to, String subject, String bodyContent)
+			throws AddressException, MessagingException {
+<span class="nc" id="L241">		Message message = new MimeMessage(sendESession);</span>
+<span class="nc" id="L242">		message.setFrom(new InternetAddress(USERNAME));</span>
+<span class="nc" id="L243">		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));</span>
+<span class="nc" id="L244">		message.setSubject(subject);</span>
+<span class="nc" id="L245">		message.setText(bodyContent);</span>
+
+<span class="nc" id="L247">		Transport.send(message);</span>
+<span class="nc" id="L248">	}</span>
+
+	/**
+	 * This method returns an email inbox
+	 * 
+	 * @return inbox returns the email's inbox
+	 */
+	public Folder getInbox() {
+<span class="fc" id="L256">		return inbox;</span>
+	}
+
+	/**
+	 * This method returns the email's Store parameter
+	 * 
+	 * @return rSstore , returns a store (Send Email)
+	 * @see Store
+	 */
+	public Store getrSstore() {
+<span class="fc" id="L266">		return rSstore;</span>
+	}
+
+	/**
+	 * This method returns the receiving email's session properties
+	 * 
+	 * @return receiveEProperties returns Properties
+	 * @see Properties
+	 */
+	public Properties getProperties() {
+<span class="fc" id="L276">		return receiveEProperties;</span>
+	}
+
+	/**
+	 * This method returns the sending email's session properties
+	 * 
+	 * @return sendEProperties return Properties
+	 * @see Properties
+	 */
+	public Properties getSendProperties() {
+<span class="fc" id="L286">		return sendEProperties;</span>
+	}
+
+	/**
+	 * This method returns the email list to be called in the application window
+	 * 
+	 * @return meList return EMail List
+	 * @see List
+	 */
+	public List&lt;SocialMessage&gt; getMeList() {
+<span class="fc" id="L296">		return meList;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

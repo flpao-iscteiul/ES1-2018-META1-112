@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>App_WindowTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">JunitTests</a> &gt; <span class="el_source">App_WindowTest.java</span></div><h1>App_WindowTest.java</h1><pre class="source lang-java linenums">package JunitTests;
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import BDA.email.Email;
+import BDA.facebook.Connect;
+import BDA.twitter.TwitterApp;
+import BDA.window.App_Window;
+
+<span class="fc" id="L17">public class App_WindowTest {</span>
+<span class="fc" id="L18">	App_Window a = new App_Window();</span>
+	
+	@Test
+	public void testApp_Window() {
+<span class="fc" id="L22">		assertEquals(a.getClass(),BDA.window.App_Window.class);</span>
+<span class="fc" id="L23">	}</span>
+	
+	@Test
+	public void testAddFrameContent() {
+<span class="fc" id="L27">		a.addFrameContent();</span>
+<span class="fc" id="L28">		assertEquals(a.getClass(),BDA.window.App_Window.class);</span>
+
+<span class="fc" id="L30">	}</span>
+	
+
+	@Test
+	public void testNewEmail() {
+<span class="fc" id="L35">		Email e = new Email();</span>
+<span class="fc" id="L36">		a.newEmail();</span>
+<span class="fc" id="L37">		assertEquals(e.getClass(), BDA.email.Email.class);</span>
+<span class="fc" id="L38">	}</span>
+
+	@Test
+	public void testMakeFacebookPost() {
+<span class="fc" id="L42">		Connect e = new Connect();</span>
+<span class="fc" id="L43">		a.makeFacebookPost();</span>
+<span class="fc" id="L44">		assertEquals(e.getClass(),BDA.facebook.Connect.class);</span>
+<span class="fc" id="L45">	}</span>
+
+	@Test
+	public void testNewTwitter() {
+<span class="fc" id="L49">		TwitterApp t = new TwitterApp();</span>
+<span class="fc" id="L50">		a.newTwitter();</span>
+<span class="fc" id="L51">		assertEquals(t.getClass(), BDA.twitter.TwitterApp.class);</span>
+<span class="fc" id="L52">	}</span>
+
+	@Test
+	public void testReadFile() {
+<span class="fc" id="L56">		a.readFile();</span>
+<span class="fc" id="L57">		assertEquals(a.getMsgList().isEmpty(),false);</span>
+		
+<span class="fc" id="L59">	}</span>
+
+	@Test
+	public void testAddMessage() {
+<span class="fc" id="L63">		assertEquals(a.getMsgList().isEmpty(),false );</span>
+<span class="fc" id="L64">	}</span>
+
+	@Test
+	public void testGetTime() {
+<span class="fc" id="L68">		assertEquals(a.getTime().isEmpty(), false);</span>
+<span class="fc" id="L69">	}</span>
+
+	@Test
+	public void testSaveFile() {
+<span class="fc" id="L73">		assertEquals(a.getClass(),BDA.window.App_Window.class);</span>
+<span class="fc" id="L74">	}</span>
+
+	@Test
+	public void testWriteToFile() {
+		try {
+<span class="fc" id="L79">			a.writeToFile();</span>
+<span class="fc" id="L80">			assertEquals(a.getMsgList().isEmpty(),false);</span>
+<span class="pc" id="L81">		} catch (ParserConfigurationException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L83">			e.printStackTrace();</span>
+<span class="nc" id="L84">		} catch (SAXException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L86">			e.printStackTrace();</span>
+<span class="nc" id="L87">		} catch (IOException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L89">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L91">	}</span>
+
+	@Test
+	public void testOpen() {
+<span class="fc" id="L95">		assertEquals(a.getMsgList().isEmpty(),false);</span>
+
+<span class="fc" id="L97">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TwitterApp.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">BDA.twitter</a> &gt; <span class="el_source">TwitterApp.java</span></div><h1>TwitterApp.java</h1><pre class="source lang-java linenums">package BDA.twitter;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import BDA.msg.SocialMessage;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
+/**
+ * Twitter class
+ * This class is used to manipulate, send and receive tweets from the Twitter feed
+ * @author Kaiser
+ * @version Release
+ */
+<span class="fc" id="L20">public final class TwitterApp {</span>
+
+	/**
+	 * Used to store Tweet statuses
+	 */
+	private List&lt;Status&gt; statuses;
+	/**
+	 * Used to store Tweets
+	 * @see SocialMessage
+	 */
+	private List&lt;SocialMessage&gt; twitterList;
+	/**
+	 * Output String
+	 */
+	private String output;
+
+	/**
+	 * This method uses the user Access Tokens to send Tweets to his/her's tweeter feed
+	 * 
+	 * @param msg sent tweet
+	 */
+
+	public void sendTwitter(String msg) {
+
+		try {
+<span class="nc" id="L45">			ConfigurationBuilder cb = new ConfigurationBuilder();</span>
+<span class="nc" id="L46">			cb.setDebugEnabled(true).setOAuthConsumerKey(&quot;HBqCJtodfMrRKHImPrVG6xaRK&quot;)</span>
+<span class="nc" id="L47">					.setOAuthConsumerSecret(&quot;2IzcP92bXnsm6TsmMuoaZS74ELGfLV1Rm7A33zx76uLnSKukf2&quot;)</span>
+<span class="nc" id="L48">					.setOAuthAccessToken(&quot;1052910409722814465-2DeJZJcm7c4q46OMAaeNopUV0pKxSO&quot;)</span>
+<span class="nc" id="L49">					.setOAuthAccessTokenSecret(&quot;MjXeT8YleL2IHQB5v5tmLYAKGO0rrF8Dh0OfgbLTkjq0y&quot;);</span>
+<span class="nc" id="L50">			TwitterFactory tf = new TwitterFactory(cb.build());</span>
+<span class="nc" id="L51">			Twitter twitter = tf.getInstance();</span>
+<span class="nc" id="L52">			statuses = twitter.getHomeTimeline();</span>
+
+<span class="nc" id="L54">			twitter4j.Twitter tw = tf.getInstance();</span>
+<span class="nc" id="L55">			Status stat = tw.updateStatus(msg);</span>
+
+<span class="nc" id="L57">		} catch (Exception e) {</span>
+		}
+<span class="nc" id="L59">	}</span>
+
+	/**
+	 * This method fetches all tweets from the timeline
+	 */
+	public void receiveTwitter() {
+		try {
+<span class="nc" id="L66">			ConfigurationBuilder cb = new ConfigurationBuilder();</span>
+<span class="nc" id="L67">			cb.setDebugEnabled(true).setOAuthConsumerKey(&quot;HBqCJtodfMrRKHImPrVG6xaRK&quot;)</span>
+<span class="nc" id="L68">					.setOAuthConsumerSecret(&quot;2IzcP92bXnsm6TsmMuoaZS74ELGfLV1Rm7A33zx76uLnSKukf2&quot;)</span>
+<span class="nc" id="L69">					.setOAuthAccessToken(&quot;1052910409722814465-2DeJZJcm7c4q46OMAaeNopUV0pKxSO&quot;)</span>
+<span class="nc" id="L70">					.setOAuthAccessTokenSecret(&quot;MjXeT8YleL2IHQB5v5tmLYAKGO0rrF8Dh0OfgbLTkjq0y&quot;);</span>
+<span class="nc" id="L71">			TwitterFactory tf = new TwitterFactory(cb.build());</span>
+<span class="nc" id="L72">			Twitter twitter = tf.getInstance();</span>
+<span class="nc" id="L73">			statuses = twitter.getHomeTimeline();</span>
+
+<span class="nc" id="L75">			output = &quot;&quot;;</span>
+<span class="nc" id="L76">			twitterList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">			for (Status status : statuses) {</span>
+
+<span class="nc bnc" id="L79" title="All 4 branches missed.">				if (status.getUser().getName() != null &amp;&amp; status.getUser().getName().contains(&quot;kaiser&quot;)) {</span>
+
+<span class="nc" id="L81">					output = status.getUser().getName() + &quot;:&quot; + status.getText();</span>
+<span class="nc" id="L82">					SocialMessage tw = new SocialMessage(</span>
+<span class="nc" id="L83">							new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;).format(Calendar.getInstance().getTime()),</span>
+<span class="nc" id="L84">							status.getUser().getName(), status.getText());</span>
+<span class="nc" id="L85">					twitterList.add(tw);</span>
+				}
+			}
+<span class="nc" id="L88">		} catch (Exception e) {</span>
+		}
+<span class="nc" id="L90">	}</span>
+
+	/**
+	 * Get output method
+	 * @return output
+	 */
+	public String getOutput() {
+<span class="nc" id="L97">		return output;</span>
+	}
+	
+	/**
+	 * This method is used to fetch all the tweets for the xml database file
+	 * @return SocialMessage List
+	 * @see SocialMessage
+	 * @see List
+	 */
+	public List&lt;SocialMessage&gt; getTwitterList() {
+<span class="nc" id="L107">		return twitterList;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

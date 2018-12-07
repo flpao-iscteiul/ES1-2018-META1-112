@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Message.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">BDA.msg</a> &gt; <span class="el_source">Message.java</span></div><h1>Message.java</h1><pre class="source lang-java linenums">package BDA.msg;
+
+/**
+ * Message class This class serves as a basic object model to later insert in
+ * the xml database file
+ * 
+ * @author Duque
+ * @version Release
+ */
+<span class="fc" id="L10">public class Message {</span>
+
+	/**
+	 * Message date
+	 */
+	private String date;
+	/**
+	 * Message from address
+	 */
+	private String from;
+	/**
+	 * Message type
+	 */
+	private String type;
+	/**
+	 * Message text content
+	 */
+	private String text;
+
+	
+	/**
+	 * Message toString method
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L35">		return &quot;Date: &quot; + date + &quot;\n &quot; + &quot;From: &quot; + from + &quot;\n &quot; + &quot;Type: &quot; + type + &quot;\n &quot; + &quot;Text: &quot; + text + &quot;\n&quot;;</span>
+	}
+
+	/**
+	 * Message getDate method
+	 * 
+	 * @return date message date
+	 */
+	public String getDate() {
+<span class="fc" id="L44">		return date;</span>
+	}
+
+	/**
+	 * Message getFrom method
+	 * 
+	 * @return from message from
+	 */
+	public String getFrom() {
+<span class="fc" id="L53">		return from;</span>
+	}
+
+	/**
+	 * Message getType method
+	 * 
+	 * @return type message type
+	 */
+	public String getType() {
+<span class="fc" id="L62">		return type;</span>
+	}
+
+	/**
+	 * Message getText method
+	 * 
+	 * @return text message text
+	 */
+	public String getText() {
+<span class="fc" id="L71">		return text;</span>
+	}
+
+	/**
+	 * Message setDate method
+	 * 
+	 * @param date message date
+	 */
+	public void setDate(String date) {
+<span class="fc" id="L80">		this.date = date;</span>
+<span class="fc" id="L81">	}</span>
+
+	/**
+	 * Message setFrom method
+	 * 
+	 * @param from message address
+	 */
+	public void setFrom(String from) {
+<span class="fc" id="L89">		this.from = from;</span>
+<span class="fc" id="L90">	}</span>
+
+	/**
+	 * Message setType method
+	 * 
+	 * @param type message type
+	 */
+	public void setType(String type) {
+<span class="fc" id="L98">		this.type = type;</span>
+<span class="fc" id="L99">	}</span>
+
+	/**
+	 * Message setText method
+	 * 
+	 * @param text message text
+	 */
+	public void setText(String text) {
+<span class="fc" id="L107">		this.text = text;</span>
+<span class="fc" id="L108">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>

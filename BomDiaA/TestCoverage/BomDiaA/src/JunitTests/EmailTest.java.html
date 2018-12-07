@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EmailTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">TestSuite (7/dez/2018 5:36:49)</a> &gt; <a href="../../index.html" class="el_group">BomDiaA</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">JunitTests</a> &gt; <span class="el_source">EmailTest.java</span></div><h1>EmailTest.java</h1><pre class="source lang-java linenums">package JunitTests;
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.util.Properties;
+
+import javax.mail.MessagingException;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import BDA.email.Email;
+
+<span class="fc" id="L15">public class EmailTest {</span>
+
+<span class="fc" id="L17">	private Email e = new Email();</span>
+
+	@Test
+	public void testReceiveEmailProperties() {
+<span class="fc" id="L21">		e.receiveEmailProperties();</span>
+<span class="fc" id="L22">		String a = e.getProperties().getProperty(&quot;mail.pop3.socketFactory.class&quot;);</span>
+<span class="fc" id="L23">		String b = e.getProperties().getProperty(&quot;mail.pop3.socketFactory.fallback&quot;);</span>
+<span class="fc" id="L24">		String c = e.getProperties().getProperty(&quot;mail.pop3.socketFactory.port&quot;);</span>
+<span class="fc" id="L25">		String j = e.getProperties().getProperty(&quot;mail.pop3.port&quot;);</span>
+<span class="fc" id="L26">		String d = e.getProperties().getProperty(&quot;mail.pop3.host&quot;);</span>
+<span class="fc" id="L27">		String g = e.getProperties().getProperty(&quot;mail.pop3.user&quot;);</span>
+<span class="fc" id="L28">		String h = e.getProperties().getProperty(&quot;mail.store.protocol&quot;);</span>
+<span class="fc" id="L29">		String i = e.getProperties().getProperty(&quot;mail.pop3.ssl.trust&quot;);</span>
+
+<span class="fc" id="L31">		assertEquals(&quot;javax.net.ssl.SSLSocketFactory&quot;, a);</span>
+<span class="fc" id="L32">		assertEquals(&quot;false&quot;, b);</span>
+<span class="fc" id="L33">		assertEquals(&quot;995&quot;, c);</span>
+<span class="fc" id="L34">		assertEquals(&quot;995&quot;, j);</span>
+<span class="fc" id="L35">		assertEquals(&quot;pop.gmail.com&quot;, d);</span>
+<span class="fc" id="L36">		assertEquals(Email.USERNAME, g);</span>
+<span class="fc" id="L37">		assertEquals(&quot;pop3&quot;, h);</span>
+<span class="fc" id="L38">		assertEquals(&quot;*&quot;, i);</span>
+<span class="fc" id="L39">	}</span>
+
+	@Test
+	public void testSendEmailProperties() {
+<span class="fc" id="L43">		e.sendEmailProperties();</span>
+
+<span class="fc" id="L45">		String a = e.getSendProperties().getProperty(&quot;mail.smtp.starttls.enable&quot;);</span>
+<span class="fc" id="L46">		String b = e.getSendProperties().getProperty(&quot;mail.smtp.auth&quot;);</span>
+<span class="fc" id="L47">		String c = e.getSendProperties().getProperty(&quot;mail.smtp.host&quot;);</span>
+<span class="fc" id="L48">		String j = e.getSendProperties().getProperty(&quot;mail.smtp.port&quot;);</span>
+
+<span class="fc" id="L50">		assertEquals(&quot;true&quot;, a);</span>
+<span class="fc" id="L51">		assertEquals(&quot;true&quot;, b);</span>
+<span class="fc" id="L52">		assertEquals(&quot;smtp.gmail.com&quot;, c);</span>
+<span class="fc" id="L53">		assertEquals(&quot;587&quot;, j);</span>
+
+<span class="fc" id="L55">	}</span>
+
+	@Test
+	public void testReceiveEmailSession() throws MessagingException {
+<span class="fc" id="L59">		e.receiveEmailProperties();</span>
+<span class="fc" id="L60">		e.receiveEmailSession();</span>
+<span class="fc" id="L61">		String a = e.getrSstore().toString();</span>
+<span class="fc" id="L62">		assertEquals(&quot;pop3://utterly.ap%40gmail.com@imap.gmail.com&quot;, a);</span>
+<span class="fc" id="L63">	}</span>
+
+	@Test
+	public void testGetProperties() {
+<span class="fc" id="L67">		e.receiveEmailProperties();</span>
+<span class="fc" id="L68">		boolean b = e.getProperties().isEmpty();</span>
+<span class="fc" id="L69">		assertEquals(b, false);</span>
+<span class="fc" id="L70">	}</span>
+
+	@Test
+	public void testOpenInbox() throws MessagingException {
+<span class="fc" id="L74">		e.receiveEmailProperties();</span>
+<span class="fc" id="L75">		e.receiveEmailSession();</span>
+<span class="fc" id="L76">		e.openInbox();</span>
+<span class="fc" id="L77">		String a = e.getInbox().getName();</span>
+<span class="fc" id="L78">		assertEquals(a, &quot;INBOX&quot;);</span>
+<span class="fc" id="L79">	}</span>
+
+	@Test
+	public void testShowContent() throws MessagingException, IOException {
+<span class="fc" id="L83">		e.receiveEmailProperties();</span>
+<span class="fc" id="L84">		e.receiveEmailSession();</span>
+<span class="fc" id="L85">		e.openInbox();</span>
+		//assertEquals(, false);
+<span class="fc" id="L87">	}</span>
+
+	@Test
+	public void testReceiveEmail() {
+<span class="fc" id="L91">		e.receivingEmail();</span>
+<span class="fc" id="L92">		assertEquals(true, true);</span>
+<span class="fc" id="L93">	}</span>
+	
+	@Test
+	public void testGetMeList() {
+<span class="fc" id="L97">		e.receivingEmail();</span>
+<span class="fc" id="L98">		assertEquals(e.getMeList().isEmpty(), false);</span>
+<span class="fc" id="L99">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>TestSuite (7/dez/2018 5:36:49)</div></body></html>
